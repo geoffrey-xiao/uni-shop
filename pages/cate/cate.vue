@@ -1,5 +1,7 @@
 <template>
 	<view>
+		<my-search
+		@gotoSearch="goSearch"></my-search>
 		<view class="scroll-view-container">
 			<scroll-view scroll-y="true" :style="{height: wh + 'px'}" class="left-scroll-view">
 				<block v-for="(item,i) in cateList" :key="i">
@@ -39,7 +41,7 @@
 			// 获取当前系统的信息
 			const sysInfo = uni.getSystemInfoSync()
 			// 为 wh 窗口可用高度动态赋值
-			this.wh = sysInfo.windowHeight
+			this.wh = sysInfo.windowHeight - 56
 			this.getCategoryList()
 		},
 		methods: {
@@ -59,6 +61,12 @@
 			goGoodList(item){
 				uni.navigateTo({
 					url:`/subpkg/goods-list/goods-list?cid=${item.cat_id}`
+				})
+			},
+			goSearch(){
+				console.log('222')
+				uni.navigateTo({
+					url:'/subpkg/search/search'
 				})
 			}
 		}

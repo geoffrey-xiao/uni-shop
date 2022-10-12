@@ -1,5 +1,9 @@
 <template>
 	<view>
+		<view class="search-box">
+			<my-search
+			@gotoSearch="goSearch"></my-search>
+		</view>
 		<swiper indicator-dots autoplay duration="2000">
 			<swiper-item v-for="(item,i) in swiperList" :key="item.goods_id">
 				<navigator class="swiper-item" :url="`/subpkg/goods-detail/goods-detail?goodsId=${item.goods_id}`">
@@ -88,6 +92,12 @@
 					})
 				}
 
+			},
+			goSearch(){
+				console.log('222')
+				uni.navigateTo({
+					url:'/subpkg/search/search'
+				})
 			}
 		},
 		onLoad() {
@@ -99,6 +109,11 @@
 </script>
 
 <style lang="scss">
+	.search-box{
+		position: sticky;
+		top: 0;
+		z-index: 999;
+	}
 	swiper-item {
 		height: 350rpx;
 
