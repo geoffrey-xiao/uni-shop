@@ -1,13 +1,13 @@
 <template>
 	<view>
-		<view class="goods-item" @click="goDetail(item)">
-			<image class="goods-img" :src="item.goods_small_logo"></image>
+		<view class="goods-item" @click="goDetail(goods)">
+			<image class="goods-img" :src="goods.goods_small_logo"></image>
 			<view class="goods-detail">
 				<view class="goods-name">
-					{{item.goods_name | ''}}
+					{{goods.goods_name || ''}}
 				</view>
 				<view class="goods-price">
-					${{item.goods_price | toFixed}}
+					${{goods.goods_price | toFixed}}
 				</view>
 			</view>
 		</view>
@@ -18,14 +18,16 @@
 	export default {
 		name: "goods-item",
 		props: {
-			item: {
+			goods: {
 				type: Object,
-				default: null
+				default: {}
 			}
 		},
 		filters: {
 			toFixed(num) {
-				return Number(num).toFixed(2)
+				if(num){
+					return Number(num).toFixed(2)
+				}
 			}
 		},
 		data() {
@@ -36,7 +38,7 @@
 		methods: {
 			goDetail() {
 				uni.navigateTo({
-					url: `/subpkg/goods-detail/goods-detail?goods_id=${this.item.goods_id}`,
+					url: `/subpkg/goods-detail/goods-detail?goods_id=${this.goods.goods_id}`,
 				})
 			}
 		}

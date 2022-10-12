@@ -1,7 +1,7 @@
 <template>
 	<view>
-		<view class="goods-list">
-			<goods-item v-for="item in goodsList" :key="item.goods_id" :item="item"></goods-item>
+		<view class="goods-list" v-for="item in goodsList" :key="item.goods_id">
+			<goods-item :goods="item"></goods-item>
 		</view>
 	</view>
 </template>
@@ -37,7 +37,7 @@
 			this.queryObj.pageNum = 1;
 			this.goodsList = [];
 			this.total = 0;
-			this.loading=false
+			this.loading = false
 			this.getGoodsList(() => uni.stopPullDownRefresh())
 		},
 		methods: {
