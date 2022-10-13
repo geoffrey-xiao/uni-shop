@@ -9,12 +9,21 @@ import store from '@/store/store.js'
 
 uni.$http = $http;
 
-$http.baseUrl = 'https://api-ugo-web.itheima.net'
+$http.baseUrl = 'https://api-ugo-web.itheima.net';
+// $http.baseUrl = 'https://api-hmugo-web.itheima.net'
 
 $http.beforeRequest = (options) => {
 	uni.showLoading({
 		title: '数据加载中'
 	})
+
+	console.log(options)
+
+	if (options.url.indexOf('/my/') !== -1) {
+		options.header = {
+			Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjIzLCJpYXQiOjE1NjQ3MzAwNzksImV4cCI6MTAwMTU2NDczMDA3OH0.YPt-XeLnjV-_1ITaXGY2FhxmCe4NvXuRnRB8OMCfnPo'
+		}
+	}
 };
 
 $http.afterRequest = (options) => {

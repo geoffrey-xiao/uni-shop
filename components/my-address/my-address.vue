@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="address-btn" v-if="Object.keys(address).length===0">
+		<view class="address-btn" v-if="!addressStr">
 			<button type="primary" size="mini" @click="chooseAddress">请选择收货地址+</button>
 		</view>
 		<view class="address-detail" v-else>
@@ -26,13 +26,14 @@
 	export default {
 		name: "my-address",
 		data() {
-			return {
-				address: {},
-			};
+			return {};
 		},
 		computed: {
 			addressStr() {
-				return `${this.address.provinceName}${this.address.cityName}${this.address.detailInfo}`
+				return this.$store.getters['m_user/addressstr']
+			},
+			address() {
+				return this.$store.state.m_user.address
 			}
 		},
 		methods: {
