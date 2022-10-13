@@ -7,7 +7,7 @@
 			</view>
 			<uni-swipe-action>
 				<block v-for="(item,i) in carts" :key="i">
-					<uni-swipe-action-item :right-options="options" @click="swipeAction">
+					<uni-swipe-action-item :right-options="options" @click="swipeAction(i)">
 						<view class="cart-item">
 							<view class="cart-item-left">
 								<radio checked color="#c00000" :checked="item.goods_state" @click="radioChange(item)">
@@ -68,6 +68,15 @@
 				return this.$store.state.m_cart.carts
 			}
 		},
+		watch: {
+			total(newVal, oldVal) {
+				console.log(newVal, oldVal)
+				uni.setTabBarBadge({
+					index: 2,
+					text: newVal + ''
+				})
+			}
+		},
 		methods: {
 			addcount() {
 				this.$store.commit('m_cart/addCount')
@@ -84,8 +93,9 @@
 				console.log(value, item)
 				this.$store.commit('m_cart/changeNum', item)
 			},
-			swipeAction() {
-				console.log(222)
+			swipeAction(i) {
+				console.log(i)
+				this.$store.commit('m_cart/deleteCart', i)
 			}
 		}
 	}

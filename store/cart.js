@@ -17,6 +17,10 @@ export default {
 			}
 			this.commit('m_cart/saveStorage')
 		},
+		deleteCart(state, i) {
+			state.carts.splice(i, 1)
+			this.commit('m_cart/saveStorage')
+		},
 		addCount(state) {
 			state.count++
 		},
