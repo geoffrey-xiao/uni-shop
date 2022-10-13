@@ -23,7 +23,6 @@
 			</view>
 		</view>
 		<rich-text :nodes="goodsDetail.goods_introduce">
-
 		</rich-text>
 		<div class="goods-nav-container">
 			<uni-goods-nav :fill="true" :options="options" :button-group="buttonGroup" @click="onClick"
@@ -36,7 +35,7 @@
 	export default {
 		data() {
 			return {
-				goodsDetail: null,
+				goodsDetail: {},
 				options: [{
 					icon: 'chat',
 					text: '客服'
@@ -49,7 +48,7 @@
 				}, {
 					icon: 'cart',
 					text: '购物车',
-					info: 2
+					info: 0
 				}],
 				buttonGroup: [{
 						text: '加入购物车',
@@ -64,9 +63,15 @@
 				],
 			};
 		},
-
+		computed: {
+			total() {
+				return this.$store.getters['m_cart/total']
+			}
+		},
 		onLoad(options) {
+			console.log(options)
 			this.getGoodsDetail(options.goods_id)
+			this.options[2].info = this.total
 		},
 		methods: {
 			async getGoodsDetail(goods_id) {
@@ -78,8 +83,7 @@
 				if (res.meta.status !== 200) return;
 				res.message.goods_introduce = res.message.goods_introduce.replace(/<img /g,
 					'<img style="display:block;" ').replace(/webp/g, 'jpg')
-				this.goods_info = res.message
-				console.log(this.goodsDetail)
+				this.goodsDetail = res.message
 			},
 			preview(i) {
 				uni.previewImage({
@@ -89,21 +93,30 @@
 			},
 			onClick(e) {
 				uni.switchTab({
-					url:'/pages/cart/cart'
+					url: '/pages/cart/cart'
 				})
 			},
 			buttonClick(e) {
 				console.log(e)
-				this.options[2].info++
+				if (e.index === 0) {
+					const goods = {
+						...this.goodsDetail,
+						goods_count: 0,
+						goods_state: true
+					}
+					this.$store.commit('m_cart/addCart', goods);
+					this.options[2].info = this.total
+				}
 			}
 		}
 	}
 </script>
 
 <style lang="scss">
-	.goods-detail-box{
+	.goods-detail-box {
 		padding-bottom: 60px;
 	}
+
 	swiper {
 		height: 750rpx;
 
@@ -114,7 +127,7 @@
 	}
 
 	.goods-detail {
-		padding: 5px;
+		padding: 16px;
 
 		.goods-price {
 			color: #c00000;
@@ -137,7 +150,8 @@
 			color: gray
 		}
 	}
-	.goods-nav-container{
+
+	.goods-nav-container {
 		position: fixed;
 		width: 100%;
 		bottom: 0;
